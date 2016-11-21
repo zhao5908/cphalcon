@@ -20,7 +20,6 @@
 namespace Phalcon\Cache\Backend;
 
 use Phalcon\Cache\Backend;
-use Phalcon\Cache\BackendInterface;
 use Phalcon\Cache\Exception;
 
 /**
@@ -38,13 +37,13 @@ use Phalcon\Cache\Exception;
  * $cache = new Memory($frontCache);
  *
  * // Cache arbitrary data
- * $cache->save('my-data', [1, 2, 3, 4, 5]);
+ * $cache->save("my-data", [1, 2, 3, 4, 5]);
  *
  * // Get data
- * $data = $cache->get('my-data');
+ * $data = $cache->get("my-data");
  *</code>
  */
-class Memory extends Backend implements BackendInterface, \Serializable
+class Memory extends Backend implements \Serializable
 {
 
 	protected _data;
