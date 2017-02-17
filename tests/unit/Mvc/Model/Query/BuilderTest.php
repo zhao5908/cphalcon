@@ -408,7 +408,7 @@ class BuilderTest extends UnitTest
     /**
      * Test checks passing 'limit'/'offset' query param into constructor.
      * limit key can take:
-     * - signle numeric value
+     * - single numeric value
      * - array of 2 values (limit, offset)
      */
     public function testConstructorLimit()
@@ -541,5 +541,46 @@ class BuilderTest extends UnitTest
                 expect($phql)->equals("SELECT name, SUM(price) FROM [" . Robots::class . "] GROUP BY [id], [name]");
             }
         );
+    }
+
+    /**
+     * Tests work with limit / offset
+     *
+     * @test
+     * @issue  12419
+     * @author Serghei Iakovelv <serghei@phalconphp.com>
+     * @since  2016-12-18
+     */
+    public function shouldCorrectHandleLimitAndOffset()
+    {
+        $this->specify(
+            'The builder object works with limit / offset incorrectly',
+            function ($limit, $offset, $expected) {
+                $builder = new Builder(null, $this->di);
+                $phql = $builder
+                    ->columns(['name'])
+                    ->from(Robots::class)
+                    ->limit($limit, $offset)
+                    ->getPhql();
+
+                /** Just prevent IDE to highlight this as not valid SQL dialect */
+                expect($phql)->equals('SELECT name ' . "FROM {$expected}");
+            },
+            ['examples' => $this->limitOffsetProvider()]
+        );
+    }
+
+    protected function limitOffsetProvider()
+    {
+        return [
+            [-7,      null,  "[" . Robots::class . "] LIMIT :APL0:"              ],
+            ["-7234", null,  "[" . Robots::class . "] LIMIT :APL0:"              ],
+            ["18",    null,  "[" . Robots::class . "] LIMIT :APL0:"              ],
+            ["18",    2,     "[" . Robots::class . "] LIMIT :APL0: OFFSET :APL1:"],
+            ["-1000", -200,  "[" . Robots::class . "] LIMIT :APL0: OFFSET :APL1:"],
+            ["1000", "-200", "[" . Robots::class . "] LIMIT :APL0: OFFSET :APL1:"],
+            ["0",    "-200", "[" . Robots::class . "]"                           ],
+            ["%3CMETA%20HTTP-EQUIV%3D%22refresh%22%20CONT ENT%3D%220%3Burl%3Djavascript%3Aqss%3D7%22%3E", 50, "[" . Robots::class . "]"],
+        ];
     }
 }

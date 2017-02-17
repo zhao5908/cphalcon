@@ -50,9 +50,6 @@ class QueryTest extends UnitTest
         $this->di = $app->getDI();
     }
 
-    /**
-     * @medium
-     */
     public function testSelectParsing()
     {
         $this->specify(
@@ -4637,7 +4634,7 @@ class QueryTest extends UnitTest
                         )
                     ],
                     [
-                        "phql"     => 'SELECT ' . Robotters:: class . '.* FROM ' . Robotters::class,
+                        "phql"     => 'SELECT ' . Robotters::class . '.* FROM ' . Robotters::class,
                         "expected" => array(
                             'models' => array(
                                 Robotters::class,
@@ -6922,8 +6919,6 @@ class QueryTest extends UnitTest
             ]
         );
     }
-
-
 
     public function testInsertParsing()
     {

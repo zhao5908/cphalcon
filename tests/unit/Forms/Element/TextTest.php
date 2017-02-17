@@ -3,6 +3,7 @@
 namespace Phalcon\Test\Unit\Forms\Element;
 
 use Phalcon\Forms\Element\Text;
+use Phalcon\Tag;
 use Phalcon\Test\Module\UnitTest;
 
 /**
@@ -24,6 +25,15 @@ use Phalcon\Test\Module\UnitTest;
  */
 class TextTest extends UnitTest
 {
+    /**
+     * executed after each test
+     */
+    protected function _after()
+    {
+        // Setting the doctype to XHTML5 for other tests to run smoothly
+        Tag::setDocType(Tag::XHTML5);
+    }
+
     /**
      * Tests Text::render
      *
@@ -157,6 +167,9 @@ class TextTest extends UnitTest
                 expect($element->getAttribute('class'))->equals('big-input');
                 expect($element->getAttribute('placeholder', 'the name'))->equals('Type the name');
                 expect($element->getAttribute('lang', 'en'))->equals('en');
+                
+                $element->setLabel(0);
+                expect($element->label())->equals('<label for="name">0</label>');
             }
         );
     }

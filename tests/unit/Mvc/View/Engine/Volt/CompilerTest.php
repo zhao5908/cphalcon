@@ -33,6 +33,15 @@ use Phalcon\Test\Module\UnitTest;
  */
 class CompilerTest extends UnitTest
 {
+    /**
+     * executed after each test
+     */
+    protected function _after()
+    {
+        // Setting the doctype to XHTML5 for other tests to run smoothly
+        Tag::setDocType(Tag::XHTML5);
+    }
+
     public function testVoltParser()
     {
         $this->specify(
@@ -125,7 +134,7 @@ class CompilerTest extends UnitTest
                 expect(is_array($intermediate))->true();
                 expect($intermediate)->count(2);
 
-                //Array acccess
+                //Array access
                 $intermediate = $volt->parse('{{ a[0 ]}}');
                 expect(is_array($intermediate))->true();
                 expect($intermediate)->count(1);
@@ -915,7 +924,7 @@ class CompilerTest extends UnitTest
                 );
                 expect($compilation)->equals('<?php $a = [\'first\' => 1, \'second\' => 2, \'third\' => 3]; ?>');
 
-                //Array acccess
+                //Array access
                 $compilation = $volt->compileString('{{ a[0 ]}}');
                 expect($compilation)->equals('<?= $a[0] ?>');
 
@@ -1573,6 +1582,7 @@ Clearly, the song is: <?= $this->getContent() ?>.
                 $di->set('url', function () {
                     return (new Url)->setBaseUri('/');
                 });
+
                 $view->setDI($di);
                 $view->setViewsDir(PATH_DATA . 'views/');
                 $view->registerEngines(array(

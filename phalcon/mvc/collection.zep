@@ -80,7 +80,7 @@ abstract class Collection implements EntityInterface, CollectionInterface, Injec
 		}
 
 		if typeof dependencyInjector != "object" {
-			throw new Exception("A dependency injector container is required to obtain the services related to the ORM");
+			throw new Exception("A dependency injector container is required to obtain the services related to the ODM");
 		}
 
 		let this->_dependencyInjector = dependencyInjector;
@@ -844,14 +844,13 @@ abstract class Collection implements EntityInterface, CollectionInterface, Injec
 	 * Shared Code for CU Operations
 	 * Prepares Collection
 	 */
-
 	protected function prepareCU()
 	{
 		var dependencyInjector, connection, source, collection;
 
 		let dependencyInjector = this->_dependencyInjector;
 		if typeof dependencyInjector != "object" {
-			throw new Exception("A dependency injector container is required to obtain the services related to the ORM");
+			throw new Exception("A dependency injector container is required to obtain the services related to the ODM");
 		}
 
 		let source = this->getSource();
@@ -1018,7 +1017,7 @@ abstract class Collection implements EntityInterface, CollectionInterface, Injec
 		let collection = this->prepareCU();
 
 		/**
-		 * Assume non-existance to fire beforeCreate events - no update does occur anyway
+		 * Assume non-existence to fire beforeCreate events - no update does occur anyway
 		 */
 		let exists = false;
 

@@ -3,7 +3,7 @@
  +------------------------------------------------------------------------+
  | Phalcon Framework                                                      |
  +------------------------------------------------------------------------+
- | Copyright (c) 2011-2016 Phalcon Team (https://phalconphp.com)          |
+ | Copyright (c) 2011-2017 Phalcon Team (https://phalconphp.com)          |
  +------------------------------------------------------------------------+
  | This source file is subject to the New BSD License that is bundled     |
  | with this package in the file docs/LICENSE.txt.                        |
@@ -202,7 +202,7 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
 	public function getCustomEventsManager(<ModelInterface> model) -> <EventsManagerInterface> | boolean
 	{
 		var eventsManager;
-		
+
 		if !fetch eventsManager, this->_customEventsManager[get_class_lower(model)] {
 			return false;
 		}
@@ -332,16 +332,15 @@ class Manager implements ManagerInterface, InjectionAwareInterface, EventsAwareI
 	 */
 	public final function isVisibleModelProperty(<ModelInterface> model, string property) -> boolean
 	{
-		var properties, modelVisibility, className;
+		var properties, className;
 
-		let modelVisibility = this->_modelVisibility,
-			className = get_class(model);
+		let className = get_class(model);
 
-		if !isset modelVisibility[className] {
-			let modelVisibility[className] = get_object_vars(model);
+		if !isset this->_modelVisibility[className] {
+			let this->_modelVisibility[className] = get_object_vars(model);
 		}
 
-		let properties = modelVisibility[className];
+		let properties = this->_modelVisibility[className];
 
 		return array_key_exists(property, properties);
 	}

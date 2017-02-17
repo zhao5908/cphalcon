@@ -34,6 +34,7 @@ use Phalcon\Db\DialectInterface;
 use Phalcon\Mvc\Model\CriteriaInterface;
 use Phalcon\Mvc\Model\TransactionInterface;
 use Phalcon\Mvc\Model\Resultset;
+use Phalcon\Mvc\Model\ResultsetInterface;
 use Phalcon\Mvc\Model\Query;
 use Phalcon\Mvc\Model\Query\Builder;
 use Phalcon\Mvc\Model\Relation;
@@ -229,7 +230,7 @@ abstract class Model implements EntityInterface, ModelInterface, ResultInterface
 			}
 
 			/**
-			 * Update the models-metada property
+			 * Update the models-metadata property
 			 */
 			let this->_modelsMetaData = metaData;
 		}
@@ -2028,7 +2029,7 @@ abstract class Model implements EntityInterface, ModelInterface, ResultInterface
 			if typeof notNull == "array" {
 
 				/**
-				 * Gets the fields that are numeric, these are validated in a diferent way
+				 * Gets the fields that are numeric, these are validated in a different way
 				 */
 				let dataTypeNumeric = metaData->getDataTypesNumeric(this);
 
@@ -2045,8 +2046,8 @@ abstract class Model implements EntityInterface, ModelInterface, ResultInterface
 					let automaticAttributes = metaData->getAutomaticUpdateAttributes(this);
 				} else {
 					let automaticAttributes = metaData->getAutomaticCreateAttributes(this);
-					let defaultValues = metaData->getDefaultValues(this);
 				}
+                let defaultValues = metaData->getDefaultValues(this);
 
 				/**
 				 * Get string attributes that allow empty strings as defaults
@@ -2088,7 +2089,7 @@ abstract class Model implements EntityInterface, ModelInterface, ResultInterface
 											let isNull = true;
 										}
 									} else {
-										if value === null || value === "" {
+										if value === null || (value === "" && value !== defaultValues[field]) {
 											let isNull = true;
 										}
 									}
@@ -4365,7 +4366,7 @@ abstract class Model implements EntityInterface, ModelInterface, ResultInterface
 			/**
 			 * If attributes is not the same as snapshot then save snapshot too
 			 */
-			if attributes != snapshot {
+			if snapshot != null && attributes != snapshot {
 				return serialize(["_attributes": attributes, "_snapshot": snapshot]);
 			}
 		}
